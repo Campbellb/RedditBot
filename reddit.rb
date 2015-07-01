@@ -1,37 +1,55 @@
 require 'redditkit'
 require 'nokogiri'
 require 'open-uri'
+require 'awesome_print'
+require 'httparty'
+
 
 
 class Reddit
-  def sign_in_public
-    @client = RedditKit::Client.new 'soupb', 'dbcbot1'
+  include HTTParty
+  base_uri "http://www.reddit.com"
+
+  def get_subreddit
+    self.class.get("/r/cvewatch.json")
+  end
+
+  def check
+    response = JSON.parse(self.get_subreddit.to_json)
+    titles = []
+    response['data']['children'].each do |post|
+      titles << post['data']['title']
+    end
+    self.get_list
+    self.find_recent
+    self.post_cve unless titles.include? @title
+  end
+
+  def sign_in
+    @client = RedditKit::Client.new 'soupb', '****'
   end
 
   def get_list
     @doc = Nokogiri::HTML(open("https://nvd.nist.gov/download/nvd-rss-analyzed.xml"))
-    @links = @doc.xpath("//items/seq")
     @cves = @doc.xpath("//item")
   end
 
+  def find_recent
+    @title = @cves[0].children[1].content
+    @body = @cves[0].children.children[1].content + " " + @cves[0].children[4].content
+  end
+
   def post_cve
-    # @cves.each_with_index do |cve, index|
-    #   title =  cves[index].children[1].content
-    #   # link = cves[index].children[4] ## this is including a "&#13;" at the end, it still works but we need to get rid of it
-    #   # description = cves[index].children.children
-    #   body = cves[index].children.children[1].content + " " + cves[index].children[4].content
-    #   client.submit(title, "cvewatch", options = {:text => body})
-    #   #needs logic to check to see if it's already been posted
-    # end
-    title = @cves[0].children[1].content
-    body = @cves[0].children.children[1].content + " " + @cves[0].children[4].content
-    @client.submit(title, "cvewatch", options = {:text => body})
+     @client.submit(@title, "cvewatch", options = {:text => @body})
   end
 
 
 end
 
 reddit = Reddit.new
-reddit.sign_in_public
-reddit.get_list
-reddit.post_cve
+if reddit.signed_in? == true
+  reddit.check
+else
+  reddit.sign_in
+  reddit.check
+end
