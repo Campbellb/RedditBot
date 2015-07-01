@@ -1,2 +1,3 @@
-reddit.rb - uses the httparty gem to get subreddit info, login and post replies
-config/schedule.rb - the 'whenever' gem's scheduler file
+http://www.reddit.com/r/CVEWatch
+
+This bot populates the /r/CVEWatch subreddit with new CVE's as the pop up.

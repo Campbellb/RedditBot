@@ -11,8 +11,7 @@ GEM
       faraday (~> 0.8)
       htmlentities (~> 4.3)
       multi_json (~> 1.8)
-    whenever (0.9.4)
-      chronic (>= 0.6.3)
+
 
 PLATFORMS
   ruby
