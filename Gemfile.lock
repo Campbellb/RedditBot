@@ -1,21 +1,30 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    chronic (0.10.2)
+    awesome_print (1.6.1)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
     htmlentities (4.3.3)
+    httparty (0.13.5)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
+    json (1.8.3)
+    mini_portile (0.6.2)
     multi_json (1.11.0)
+    multi_xml (0.5.5)
     multipart-post (2.0.0)
+    nokogiri (1.6.6.2)
+      mini_portile (~> 0.6.0)
     redditkit (1.0.2)
       faraday (~> 0.8)
       htmlentities (~> 4.3)
       multi_json (~> 1.8)
 
-
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  awesome_print
+  httparty
+  nokogiri
   redditkit
-  whenever
