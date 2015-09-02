@@ -26,7 +26,7 @@ class Reddit
   end
 
   def sign_in
-    @client = RedditKit::Client.new 'soupb', 'dbcbot1'
+    @client = RedditKit::Client.new 'soupb', ''
   end
 
   def get_list
